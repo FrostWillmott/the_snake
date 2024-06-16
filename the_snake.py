@@ -51,10 +51,13 @@ class GameObject:
         self.position: tuple = STARTING_POSITION
         self.border_color: tuple = border_color
         """Initialize a game object with a color and a position."""
+    def __str__(self):
+        return self.__class__.__name__
 
     def draw(self):
         """Method to draw the game object. To be implemented in subclasses."""
-        raise NotImplementedError('Method implemented in subclasses.')
+        name = self.__str__()
+        raise NotImplementedError(f'Method draw() should be implemented in subclass {name}, but it is not.')
 
 
 class Snake(GameObject):
@@ -130,24 +133,20 @@ class Snake(GameObject):
 class Apple(GameObject):
     """Class representing the apple in the game."""
 
-    def __init__(
-            self, snake=Snake(), body_color=APPLE_COLOR,
-            border_color=BORDER_COLOR
-    ) -> None:
+    def __init__(self, body_color=APPLE_COLOR, border_color=BORDER_COLOR) -> None:
         """Initialize an apple with a color and a random position."""
         super().__init__(body_color, border_color)
-        self.randomize_position(snake)
+        self.randomize_position()
 
-    def randomize_position(self, snake) -> None:
+    def randomize_position(self, occupied_positions=None) -> None:
         """Randomize the position of the apple."""
-        x = True
-        while x:
+        if occupied_positions is None:
+            occupied_positions = [STARTING_POSITION]
+        while self.position in occupied_positions:
             self.position = (
                 randint(0, GRID_WIDTH - GRID_SIZE) * GRID_SIZE,
                 randint(0, GRID_HEIGHT - GRID_SIZE) * GRID_SIZE
             )
-            for i in range(len(snake.positions)):
-                x = False if self.position != snake.positions[i] else True
 
     def draw(self) -> None:
         """Draw the apple on the screen."""
@@ -180,6 +179,7 @@ def handle_keys(game_object) -> None:
                 game_object.next_direction = RIGHT
             elif event.key == pg.K_ESCAPE:
                 pg.quit()
+                raise SystemExit
 
 
 def main() -> None:
@@ -188,7 +188,7 @@ def main() -> None:
     pg.init()
     # Тут нужно создать экземпляры классов.
     snake = Snake()
-    apple = Apple(snake)
+    apple = Apple()
 
     # Тут опишите основную логику игры.
     while True:
@@ -196,13 +196,13 @@ def main() -> None:
         handle_keys(snake)
         snake.update_direction()
         snake.move()
-        for i in range(2, len(snake.positions)):
-            if snake.positions[i] == snake.positions[0]:
-                snake.reset()
-                screen.fill(BOARD_BACKGROUND_COLOR)
+        if snake.get_head_position() in snake.positions[2:]:
+            snake.reset()
+            apple.randomize_position()
+            screen.fill(BOARD_BACKGROUND_COLOR)
         if snake.get_head_position() == apple.position:
             snake.length += 1
-            apple.randomize_position(snake)
+            apple.randomize_position(snake.positions)
         snake.draw()
         apple.draw()
         pg.display.update()
