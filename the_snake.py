@@ -141,7 +141,9 @@ class Apple(GameObject):
         super().__init__(body_color, border_color)
         self.randomize_position()
 
-    def randomize_position(self, occupied_positions=[STARTING_POSITION]) -> None:
+    def randomize_position(
+            self, occupied_positions=[STARTING_POSITION]
+    ) -> None:
         """Randomize the position of the apple."""
         while self.position in occupied_positions:
             self.position = (
