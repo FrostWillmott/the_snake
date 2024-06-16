@@ -52,20 +52,13 @@ class GameObject:
         self.position: tuple = STARTING_POSITION
         self.border_color: tuple = border_color
 
-    def __str__(self):
-        """Return the name of the class."""
-        return self.__class__.__name__
-
     def draw(self):
         """
         Method to draw the game object.
         To be implemented in subclasses.
         """
-        name = self.__str__()
         raise NotImplementedError(
-            f'Method draw() should be implemented in subclass {name},'
-            f' but it is not.'
-        )
+            f'draw() to be implemented in subclass {self.__class__.__name__}')
 
 
 class Snake(GameObject):
@@ -148,10 +141,8 @@ class Apple(GameObject):
         super().__init__(body_color, border_color)
         self.randomize_position()
 
-    def randomize_position(self, occupied_positions=None) -> None:
+    def randomize_position(self, occupied_positions=[STARTING_POSITION]) -> None:
         """Randomize the position of the apple."""
-        if occupied_positions is None:
-            occupied_positions = [STARTING_POSITION]
         while self.position in occupied_positions:
             self.position = (
                 randint(0, GRID_WIDTH - GRID_SIZE) * GRID_SIZE,
