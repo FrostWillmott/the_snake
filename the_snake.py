@@ -131,7 +131,8 @@ class Apple(GameObject):
     """Class representing the apple in the game."""
 
     def __init__(
-            self, snake=Snake(), body_color=APPLE_COLOR, border_color=BORDER_COLOR
+            self, snake=Snake(), body_color=APPLE_COLOR,
+            border_color=BORDER_COLOR
     ) -> None:
         """Initialize an apple with a color and a random position."""
         super().__init__(body_color, border_color)
