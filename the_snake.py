@@ -60,7 +60,9 @@ class GameObject:
 class Snake(GameObject):
     """Class representing the snake in the game."""
 
-    def __init__(self, body_color=SNAKE_COLOR, border_color=BORDER_COLOR) -> None:
+    def __init__(
+            self, body_color=SNAKE_COLOR, border_color=BORDER_COLOR
+    ) -> None:
         """
         Initialize a snake
         with a color, length, positions, direction, and next direction.
@@ -91,9 +93,14 @@ class Snake(GameObject):
         x = x % SCREEN_WIDTH
         y = y % SCREEN_HEIGHT
 
-        self.positions.insert(0, (x, y))
+        self.positions.insert(
+            0, (x, y)
+        )
 
-        self.last: tuple = self.positions.pop() if len(self.positions) > self.length else None
+        self.last: tuple = (
+            self.positions.pop()
+            if len(self.positions) > self.length
+            else None)
 
     def reset(self) -> None:
         """Reset the snake to its initial state."""
@@ -123,7 +130,9 @@ class Snake(GameObject):
 class Apple(GameObject):
     """Class representing the apple in the game."""
 
-    def __init__(self, snake=Snake(), body_color=APPLE_COLOR, border_color=BORDER_COLOR) -> None:
+    def __init__(
+            self, snake=Snake(), body_color=APPLE_COLOR, border_color=BORDER_COLOR
+    ) -> None:
         """Initialize an apple with a color and a random position."""
         super().__init__(body_color, border_color)
         self.randomize_position(snake)
@@ -132,12 +141,12 @@ class Apple(GameObject):
         """Randomize the position of the apple."""
         x = True
         while x:
-                self.position = (
-                    randint(0, GRID_WIDTH - GRID_SIZE) * GRID_SIZE,
-                    randint(0, GRID_HEIGHT - GRID_SIZE) * GRID_SIZE
-                )
-                for i in range(len(snake.positions)):
-                    x = False if self.position != snake.positions[i] else True
+            self.position = (
+                randint(0, GRID_WIDTH - GRID_SIZE) * GRID_SIZE,
+                randint(0, GRID_HEIGHT - GRID_SIZE) * GRID_SIZE
+            )
+            for i in range(len(snake.positions)):
+                x = False if self.position != snake.positions[i] else True
 
     def draw(self) -> None:
         """Draw the apple on the screen."""
