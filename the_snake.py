@@ -47,15 +47,20 @@ class GameObject:
     """Base class for game objects."""
 
     def __init__(self, body_color=None, border_color=None):
+        """Initialize a game object with a color and a position."""
         self.body_color: tuple = body_color
         self.position: tuple = STARTING_POSITION
         self.border_color: tuple = border_color
-        """Initialize a game object with a color and a position."""
+
     def __str__(self):
+        """Return the name of the class."""
         return self.__class__.__name__
 
     def draw(self):
-        """Method to draw the game object. To be implemented in subclasses."""
+        """
+        Method to draw the game object.
+        To be implemented in subclasses.
+        """
         name = self.__str__()
         raise NotImplementedError(f'Method draw() should be implemented in subclass {name}, but it is not.')
 
@@ -133,7 +138,9 @@ class Snake(GameObject):
 class Apple(GameObject):
     """Class representing the apple in the game."""
 
-    def __init__(self, body_color=APPLE_COLOR, border_color=BORDER_COLOR) -> None:
+    def __init__(
+            self, body_color=APPLE_COLOR,
+            border_color=BORDER_COLOR) -> None:
         """Initialize an apple with a color and a random position."""
         super().__init__(body_color, border_color)
         self.randomize_position()
