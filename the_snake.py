@@ -62,7 +62,10 @@ class GameObject:
         To be implemented in subclasses.
         """
         name = self.__str__()
-        raise NotImplementedError(f'Method draw() should be implemented in subclass {name}, but it is not.')
+        raise NotImplementedError(
+            f'Method draw() should be implemented in subclass {name},'
+            f' but it is not.'
+        )
 
 
 class Snake(GameObject):
